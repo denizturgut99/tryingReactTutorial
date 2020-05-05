@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import pet, { ANIMALS } from '@frontendmasters/pet';
 import useDropdown from './useDropdown';
+import Results from './results';
 
 const SearchParams = () => {
     const [location, setLocation] = useState('Seattle, WA');
     const [breeds, setBreeds] = useState([]);
     const [animal, AnimalDropdown] = useDropdown('Animal', 'dog', ANIMALS);
     const [breed, BreedDropDown, setBreed] = useDropdown('Breed', '', breeds);
+    const [pets, setPets] = useState([]); //empty array because there wont be pets when api is first requested
+
+    async function requestPets() {
+        const { animals } = await pet.animals({
+            location,
+            breed,
+            type: animal,
+        });
+
+        setPets(animals || []); // either going to be what is inside animals or empty
+    }
 
     // useEffect runs after rendering is finished, helps to load the page faster
     useEffect(() => {
@@ -23,7 +35,12 @@ const SearchParams = () => {
     return (
         <div className="search-params">
             <h1>{location}</h1>
-            <form>
+            <form
+                onSubmit={(event) => {
+                    event.preventDefault(); // prevent from submitting html post form
+                    requestPets();
+                }}
+            >
                 <label htmlFor="location">
                     Location
                     <input
@@ -37,6 +54,7 @@ const SearchParams = () => {
                 <BreedDropDown></BreedDropDown>
                 <button>Submit</button>
             </form>
+            <Results pets={pets}></Results>
         </div>
     );
 };
