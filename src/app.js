@@ -1,15 +1,22 @@
-import React from "react";
-import { render } from "react-dom";
-import SearchParams from "./searchParams";
+import React from 'react';
+import { render } from 'react-dom';
+import SearchParams from './searchParams';
+import { Router, Link } from '@reach/router';
+import Details from './details';
 
 const App = () => {
-  return (
-    <div>
-      <h1>Trying React</h1>
-      <SearchParams></SearchParams>
-    </div>
-  );
+    return (
+        <div>
+            <header>
+                <Link to="/">Trying React</Link>
+            </header>
+            <Router>
+                <SearchParams path="/"></SearchParams>
+                <Details path="/details/:id"></Details>
+            </Router>
+        </div>
+    );
 };
 
 // overwrites what is inside the div
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
