@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import pet, { ANIMALS } from '@frontendmasters/pet';
 import useDropdown from './useDropdown';
 import Results from './results';
+import ThemeContext from './themeContext';
 
 const SearchParams = () => {
     const [location, setLocation] = useState('Seattle, WA');
@@ -9,6 +10,7 @@ const SearchParams = () => {
     const [animal, AnimalDropdown] = useDropdown('Animal', 'dog', ANIMALS);
     const [breed, BreedDropDown, setBreed] = useDropdown('Breed', '', breeds);
     const [pets, setPets] = useState([]); //empty array because there wont be pets when api is first requested
+    const [theme, setTheme] = useContext(ThemeContext);
 
     async function requestPets() {
         const { animals } = await pet.animals({
@@ -52,7 +54,20 @@ const SearchParams = () => {
                 </label>
                 <AnimalDropdown></AnimalDropdown>
                 <BreedDropDown></BreedDropDown>
-                <button>Submit</button>
+                <label htmlFor="theme">
+                    Theme
+                    <select
+                        value={theme}
+                        onChange={(event) => setTheme(event.target.value)}
+                        onBlur={(event) => setTheme(event.target.value)}
+                    >
+                        <option value="peru">Peru</option>
+                        <option value="darkblue">Dark Blue</option>
+                        <option value="red">Red</option>
+                        <option value="black">Black</option>
+                    </select>
+                </label>
+                <button style={{ backgroundColor: theme }}>Submit</button>
             </form>
             <Results pets={pets}></Results>
         </div>
