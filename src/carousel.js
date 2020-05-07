@@ -6,6 +6,7 @@ class Carousel extends React.Component {
         active: 0,
     };
 
+    // runs right before rendering the DOM elements
     static getDerivedStateFromProps({ media }) {
         let photos = ['http://placecorgi.com/600/600'];
         if (media.length) {
