@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 import SearchParams from './searchParams';
-import { Router, Link } from '@reach/router';
+import { Router } from '@reach/router';
 import Details from './details';
 import ThemeContext from './themeContext';
+import Navbar from './navBar';
 
 const App = () => {
     const themeHook = useState('black');
@@ -11,9 +12,7 @@ const App = () => {
         <React.StrictMode>
             <ThemeContext.Provider value={themeHook}>
                 <div>
-                    <header>
-                        <Link to="/">Trying React</Link>
-                    </header>
+                    <Navbar></Navbar>
                     <Router>
                         <SearchParams path="/"></SearchParams>
                         <Details path="/details/:id"></Details>
