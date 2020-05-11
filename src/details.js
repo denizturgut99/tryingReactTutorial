@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import pet from '@frontendmasters/pet';
 import Carousel from './carousel';
 import ErrorBoundary from './errorBoundary';
 import ThemeContext from './themeContext';
 import { navigate } from '@reach/router';
-import Modal from './modal';
+import _ from 'lodash';
+import moment from 'moment';
+
+const Modal = lazy(() => import('./modal'));
 
 class Details extends React.Component {
     //using hooks is not allowed
