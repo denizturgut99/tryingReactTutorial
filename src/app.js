@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { render } from 'react-dom';
 import SearchParams from './searchParams';
 import { Router, Link } from '@reach/router';
 import Details from './details';
@@ -24,5 +23,4 @@ const App = () => {
     );
 };
 
-// overwrites what is inside the div
-render(<App />, document.getElementById('root'));
+export default App;

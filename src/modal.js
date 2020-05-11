@@ -8,7 +8,6 @@ const Modal = ({ children }) => {
         elRef.current = div;
     }
 
-    // componentWillUnmount of hooks
     useEffect(() => {
         const modalRoot = document.getElementById('modal');
         modalRoot.appendChild(elRef.current);
