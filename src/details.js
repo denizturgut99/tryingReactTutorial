@@ -5,6 +5,7 @@ import ErrorBoundary from './errorBoundary';
 import ThemeContext from './themeContext';
 import { navigate } from '@reach/router';
 import Modal from './modal';
+import { connect } from 'react-redux';
 
 class Details extends React.Component {
     //using hooks is not allowed
@@ -44,13 +45,9 @@ class Details extends React.Component {
                 <div>
                     <h1>{name}</h1>
                     <h2>{`${animal} - ${breed} - ${location}`}</h2>
-                    <ThemeContext.Consumer>
-                        {([theme]) => (
-                            <button onClick={this.toggleModal} style={{ backgroundColor: theme }}>
-                                Adopt {name}
-                            </button>
-                        )}
-                    </ThemeContext.Consumer>
+                    <button onClick={this.toggleModal} style={{ backgroundColor: this.props.theme }}>
+                        Adopt {name}
+                    </button>
                     <p>{description}</p>
                     {showModal ? (
                         <Modal>
@@ -68,11 +65,13 @@ class Details extends React.Component {
         );
     }
 }
+const mapStateToProps = ({ theme }) => ({ theme });
+const WrappedDeatils = connect(mapStateToProps)(Details);
 
 export default function DetailsWithErrorBoundary(props) {
     return (
         <ErrorBoundary>
-            <Details {...props}></Details>
+            <WrappedDeatils {...props}></WrappedDeatils>
         </ErrorBoundary>
     );
 }
