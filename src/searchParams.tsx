@@ -58,7 +58,7 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
                 <label htmlFor="theme">
                     Theme
                     <select
-                        value={theme}
+                        value={theme.toString()}
                         onChange={(event) => setTheme(event.target.value)}
                         onBlur={(event) => setTheme(event.target.value)}
                     >
@@ -68,7 +68,7 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
                         <option value="black">Black</option>
                     </select>
                 </label>
-                <button style={{ backgroundColor: theme }}>Submit</button>
+                <button style={{ backgroundColor: theme.toString() }}>Submit</button>
             </form>
             <Results pets={pets}></Results>
         </div>
