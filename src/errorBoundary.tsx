@@ -1,26 +1,26 @@
 // mostly code from react.js.org/docs/error-boundaries.html
 
-import React from 'react';
-import { Link, Redirect, navigate } from '@reach/router';
+import React, { ErrorInfo } from 'react';
+import { Link, Redirect } from '@reach/router';
 
 class ErrorBoundary extends React.Component {
-    state = { hasError: false, redirect: false };
+    public state = { hasError: false, redirect: false };
 
     // gets called whenever there is an error
-    static getDerivedStateFromError() {
+    public static getDerivedStateFromError() {
         return { hasError: true };
     }
-    componentDidCatch(error, info) {
+    public componentDidCatch(error: Error, info: ErrorInfo) {
         console.error('ErrorBoundary caught an error', error, info);
     }
     // this will run when it receives new state or new props
-    componentDidUpdate() {
+    public componentDidUpdate() {
         if (this.state.hasError) {
             setTimeout(() => this.setState({ redirect: true }), 5000);
             //setTimeout(() => navigate('/'), 5000);
         }
     }
-    render() {
+    public render() {
         if (this.state.redirect) {
             return <Redirect to="/"></Redirect>;
         }

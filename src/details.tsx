@@ -1,37 +1,53 @@
 import React from 'react';
-import pet from '@frontendmasters/pet';
+import pet, { Photo } from '@frontendmasters/pet';
 import Carousel from './carousel';
 import ErrorBoundary from './errorBoundary';
 import ThemeContext from './themeContext';
-import { navigate } from '@reach/router';
+import { navigate, RouteComponentProps } from '@reach/router';
 import Modal from './modal';
 
-class Details extends React.Component {
+class Details extends React.Component<RouteComponentProps<{ id: string }>> {
     //using hooks is not allowed
 
-    state = { loading: true, showModal: false };
+    public state = {
+        loading: true,
+        showModal: false,
+        name: '',
+        animal: '',
+        location: '',
+        description: '',
+        media: [] as Photo[],
+        url: '',
+        breed: '',
+    };
 
     //component methods are life cycle methods
     //componentDidMount is similar to useEffect, it runs when it first starts up and doesnt run again
     //it doesnt need dependencies like useEffect
-    componentDidMount() {
-        pet.animal(this.props.id).then(({ animal }) => {
-            this.setState({
-                url: animal.url,
-                name: animal.name,
-                animal: animal.type,
-                location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
-                description: animal.description,
-                media: animal.photos,
-                breed: animal.breeds.primary,
-                loading: false,
-            });
-        }, console.error);
+    public componentDidMount() {
+        if (!this.props.id) {
+            navigate('/');
+            return;
+        }
+        pet.animal(+this.props.id)
+            .then(({ animal }) => {
+                this.setState({
+                    url: animal.url,
+                    name: animal.name,
+                    animal: animal.type,
+                    location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
+                    description: animal.description,
+                    media: animal.photos,
+                    breed: animal.breeds.primary,
+                    loading: false,
+                });
+            })
+            .catch((err: Error) => this.setState({ error: err }));
     }
-    toggleModal = () => this.setState({ showModal: !this.state.showModal });
-    adopt = () => navigate(this.state.url);
+    public toggleModal = () => this.setState({ showModal: !this.state.showModal });
+    public adopt = () => navigate(this.state.url);
     //every class needs a render method or it wont work
-    render() {
+    public render() {
         if (this.state.loading) {
             return <h1>loading...</h1>;
         }
@@ -46,7 +62,7 @@ class Details extends React.Component {
                     <h2>{`${animal} - ${breed} - ${location}`}</h2>
                     <ThemeContext.Consumer>
                         {([theme]) => (
-                            <button onClick={this.toggleModal} style={{ backgroundColor: theme }}>
+                            <button style={{ backgroundColor: theme }} onClick={this.toggleModal}>
                                 Adopt {name}
                             </button>
                         )}
@@ -69,7 +85,7 @@ class Details extends React.Component {
     }
 }
 
-export default function DetailsWithErrorBoundary(props) {
+export default function DetailsWithErrorBoundary(props: RouteComponentProps<{ id: string }>) {
     return (
         <ErrorBoundary>
             <Details {...props}></Details>
