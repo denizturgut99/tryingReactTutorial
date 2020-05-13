@@ -12,14 +12,14 @@ const SearchParams = () => {
     const [pets, setPets] = useState([]); //empty array because there wont be pets when api is first requested
     const [theme, setTheme] = useContext(ThemeContext);
 
-    async function requestPets() {
-        const { animals } = await pet.animals({
+    function requestPets() {
+        pet.animals({
             location,
             breed,
             type: animal,
+        }).then(({ animals }) => {
+            setPets(animals || []); // either going to be what is inside animals or empty
         });
-
-        setPets(animals || []); // either going to be what is inside animals or empty
     }
 
     // useEffect runs after rendering is finished, helps to load the page faster
